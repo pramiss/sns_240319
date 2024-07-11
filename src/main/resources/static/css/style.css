@@ -1,0 +1,77 @@
+@charset "UTF-8";
+
+/* 변수 */
+:root {
+	--primary-color: #36C2CE;
+}
+
+/* 범용 */
+.a-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.x-center {
+	display: flex;
+	justify-content: center;
+}
+.y-center {
+	display: flex;
+	align-items: center;
+}
+
+/* 레이아웃 */
+header {
+	height: 100px;
+	background: var(--primary-color);
+}
+.contents {
+	min-height: 500px;
+}
+
+
+/* 로그인 관련 */
+
+
+/* 회원가입 관련 */
+.sign-in-box {
+	display: flex;
+	justify-content: center;
+	
+}
+.sign-in-input-box {
+	background: #f5f5f5;
+	padding: 100px 200px;
+	box-shadow: 0 5px 5px #808080;
+	border-radius: 2px;
+}
+
+/* input 박스 */
+.input-type-a {
+	font-size: 17px;
+	height: 48px;
+	border-radius: 8px;
+	box-shadow: 0 1px 3px #ccc;
+}
+
+/* 너비 */
+.w-320px {
+	width: 320px;
+}
+
+/* 버튼 */
+.btn-sign {
+	font-size: 22px;
+	width: 146px;
+	color: white;
+	border-radius: 8px;
+}
+
+/* 배경색 */
+.bg-darkdark {
+	background: #525252;
+}
+.bg-skyblue {
+	background: #3ABEF9;
+}
+
