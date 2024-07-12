@@ -14,5 +14,8 @@ public class UserController {
 	}
 	
 	
-	// @GetMapping("/sign-up-view")
+	@GetMapping("/sign-up-view")
+	public String signUpView() {
+		return "user/signUp";
+	}
 }
