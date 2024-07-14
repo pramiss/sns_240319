@@ -7,13 +7,13 @@
 <section layout:fragment="content" class="contents">
 	<div class="sign-box">
 		<form method="post" action="#">
-			<h1 class="mt-5 mb-4">로그인</h1>
+			<h1 class="mb-4">로그인</h1>
 			<div class="sign-input-box">
-				<input type="text" name="id" placeholder="아이디를 입력하세요." class="form-control mb-3 input-type-a w-320px">
-				<input type="password" name="password" placeholder="비밀번호를 입력하세요." class="form-control mb-4 input-type-a w-320px">
+				<input type="text" id="loginId" name="loginId" placeholder="아이디를 입력하세요." class="form-control mb-3 input-type-a w-320px">
+				<input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요." class="form-control mb-4 input-type-a w-320px">
 				<div class="d-flex justify-content-between">
-					<button type="button" class="btn btn-sign bg-darkdark">회원가입</button>
-					<button type="submit" class="btn btn-sign bg-skyblue">로그인</button>
+					<button type="button" id="signUpBtn" class="btn btn-sign bg-darkdark">회원가입</button>
+					<button type="submit" id="signInBtn" class="btn btn-sign bg-skyblue">로그인</button>
 				</div>
 			</div>
 		</form>
@@ -23,6 +23,11 @@
 <!-- defaultLayout: script -->
 <th:block layout:fragment="script">
 	<script>
+		$(document).ready(function() {
+			$("#signUpBtn").on("click", function() {
+				location.href = "/user/sign-up-view";
+			});
+		}); //-- ready
 	
 	</script>
 </th:block>

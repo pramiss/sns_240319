@@ -7,37 +7,49 @@
 <section layout:fragment="content" class="contents">
 	<div class="sign-box">
 		<form id="signUpForm" method="post" action="/user/sign-up">
-			<h1 class="mt-5 mb-4">회원가입</h1>
+			<h1 class="mb-4">회원가입</h1>
 			<div class="sign-input-box">
 				<div class="form-group">
 					<label for="loginId">아이디</label>
 					<div class="d-flex">
 						<input type="text" name="loginId" id="loginId" placeholder="아이디를 입력해주세요." class="form-control mb-1 input-type-a w-320px">
-						<button id="checkIdDupBtn" class="btn btn-success">중복확인</button>
+						<button type="button" id="checkIdDupBtn" class="btn btn-success">중복확인</button>
+					</div>
+					<div>
+						<small id="idCheckLength" class="text-danger d-none">4자 이상의 아이디만 가능합니다.</small>
+						<small id="idCheckDuplicated" class="text-danger d-none">사용할 수 없는 아이디입니다. 다른 아이디를 입력해 주세요.</small>
+						<small id="idCheckOk" class="text-success d-none">사용 가능한 아이디입니다.</small>
 					</div>
 				</div>
 				<div class="form-group">
 					<label for="password">비밀번호</label>
-					<input type="password" name="password" id="password" placeholder="비밀번호를 입력해주세요." class="form-control mb-1 input-type-a w-320px">
+					<input type="password" name="password" id="password" placeholder="비밀번호를 입력해주세요." class="form-control mb-1 input-type-a">
+					<div>
+						<small id="passwordCheckLength" class="text-danger d-none">비밀번호를 입력해주세요.</small>
+					</div>
 				</div>
 				<div class="form-group">
 					<label for="confirmPassword">비밀번호 확인</label>
-					<input type="password" name="confirmPassword" id="confirmPassword" placeholder="비밀번호를 확인해주세요." class="form-control mb-1 input-type-a w-320px">
+					<input type="password" name="confirmPassword" id="confirmPassword" placeholder="비밀번호를 확인해주세요." class="form-control mb-1 input-type-a">
+					<div>
+						<small id="confirmPasswordCheckLength" class="text-danger d-none">비밀번호를 확인해주세요.</small>
+						<small id="confirmPasswordCheckEqual" class="text-danger d-none">비밀번호가 일치하지 않습니다.</small>
+					</div>
 				</div>
 				<div class="form-group">
 					<label for="name">이름</label>
-					<input type="text" name="name" id="name" placeholder="이름을 입력해주세요." class="form-control mb-1 input-type-a w-320px">
+					<input type="text" name="name" id="name" placeholder="이름을 입력해주세요." class="form-control mb-1 input-type-a">
+					<small id="nameCheckLength" class="text-danger d-none">이름을 입력해주세요.</small>
 				</div>
 				<div class="form-group">
 					<label for="email">이메일 주소</label>
-					<input type="text" name="email" id="email" placeholder="이메일 주소를 입력해주세요." class="form-control mb-1 input-type-a w-320px">
+					<input type="text" name="email" id="email" placeholder="이메일 주소를 입력해주세요." class="form-control mb-1 input-type-a">
+					<small id="emailCheckLength" class="text-danger d-none">이메일을 입력해주세요.</small>
 				</div>
 				
-				
-				
-				<div class="d-flex justify-content-between">
-					<button type="button" class="btn btn-sign bg-darkdark">회원가입</button>
-					<button type="submit" class="btn btn-sign bg-skyblue">로그인</button>
+				<!-- 회원가입 하기 버튼 -->
+				<div class="d-flex justify-content-end mt-5">
+					<button type="submit" class="btn btn-sign bg-skyblue">회원가입</button>
 				</div>
 			</div>
 		</form>
@@ -47,7 +59,118 @@
 <!-- defaultLayout: script -->
 <th:block layout:fragment="script">
 	<script>
-	
+		$(document).ready(function() {
+			
+			// 아이디 중복확인 함수
+			function checkIdDuplicated(loginId) {
+				$('#idCheckLength').addClass('d-none');
+				$('#idCheckDuplicated').addClass('d-none');
+				$('#idCheckOk').addClass('d-none');
+				
+				if (loginId.length < 4) {
+					$('#idCheckLength').removeClass('d-none');
+					return;
+				}
+				
+				// AJAX로 중복확인 - 비동기
+				$.ajax({
+					// request
+					method:"GET"
+					, url:"/user/is-duplicated-id"
+					, data:{"loginId":loginId}
+					, async: false
+					
+					// response
+					, success:function(data) {
+						if (data.is_duplicated) { // 중복O
+							$('#idCheckDuplicated').removeClass('d-none');
+						} else { // 중복X
+							$('#idCheckOk').removeClass('d-none');
+						}
+					}
+					, error:function(error) {
+						alert("AJAX ERROR : 아이디 중복확인 실패");
+					}
+				}); //-- ajax 중복확인 통신
+			} //-- 아이디 중복확인 함수
+			
+			
+			// 아이디 중복확인 버튼
+			$('#checkIdDupBtn').on('click', function() {
+				let loginId = $('#loginId').val().trim();
+				checkIdDuplicated(loginId);
+				$('#idCheckOk').addClass('d-none');
+			}) //-- 아이디 중복확인
+			
+			// 회원가입 submit 동작
+			$("#signUpForm").on('submit', function(e) {
+				e.preventDefault(); // 동작(submit) 중단
+
+				// 초기화 -- id는 함수에서 초기화
+				$('#passwordCheckLength').addClass('d-none');
+				$('#confirmPasswordCheckLength').addClass('d-none');
+				$('#confirmPasswordCheckEqual').addClass('d-none');
+				$('#nameCheckLength').addClass('d-none');
+				$('#emailCheckLength').addClass('d-none');
+				
+				// name value
+				let loginId = $('#loginId').val().trim();
+				let password = $('#password').val();
+				let confirmPassword = $('#confirmPassword').val();
+				let name = $('#name').val().trim();
+				let email = $('#email').val().trim();
+				
+				// validation
+				checkIdDuplicated(loginId);
+				if ($('#idCheckOk').hasClass('d-none')) {
+					return false;
+				}
+				
+				if (!password) {
+					$('#passwordCheckLength').removeClass('d-none');
+					return false;
+				}
+				
+				if (!confirmPassword) {
+					$('#confirmPasswordCheckLength').removeClass('d-none');
+					return false;
+				}
+				
+				if (password != confirmPassword) {
+					$('#confirmPasswordCheckEqual').removeClass('d-none');
+					return false;
+				}
+				
+				if (!name) {
+					$('#nameCheckLength').removeClass('d-none');
+					return false;
+				}
+				
+				if (!email) {
+					$('#emailCheckLength').removeClass('d-none');
+					return false;
+				}
+				
+				// AJAX를 통한 회원가입 (DB Insert)
+				let url = $(this).attr('action');
+				let params = $(this).serialize();
+				
+				$.post(url, params)
+				.done(function(data) {
+					if (data.code == 200) {
+						alert("가입을 환영합니다. 다시 로그인 해주세요.");
+						location.href = "/user/sign-in-view";
+					} else {
+						alert(data.error_message);
+					}
+				})
+				.fail(function(error) {
+					alert("AJAX ERROR : 회원가입 실패")
+				}); 
+			}) //-- 회원가입 submit
+			
+			
+		}); //-- ready
 	</script>
 </th:block>
 
