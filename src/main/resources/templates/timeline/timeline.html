@@ -11,18 +11,46 @@
 			<textarea class="new-post-area" rows="4" placeholder="내용을 입력해주세요."></textarea>
 			<div class="d-flex justify-content-between mt-1">
 				<span>이미지</span>
-				<button class="btn btn-upload bg-skyblue">게시</button>
+				<button id="uploadBtn" class="btn btn-secondary btn-upload">게시</button>
 			</div>
 		</div>
 		
 		<!-- Post(Card) 목록 -->
-		<div class="card">
-			<div class="d-flex justify-content-between">
-				<div>글쓴이</div>
-				<img src="/img/more-icon.png">
+		<div class="card-container">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-header-text">marobiana</div>
+					<img src="/img/more-icon.png" height="100%">
+				</div>
+				<div class="card-img">
+					<img width="100%" alt="게시물" src="https://cdn.pixabay.com/photo/2024/05/18/19/21/plant-8770937_1280.jpg">
+				</div>
+				<div class="card-like">
+					<img alt="좋아요" src="/img/heart-icon.png" class="like mr-2">
+					<span>좋아요 11개</span>
+				</div>
+				<div class="card-content">
+					<span class="font-weight-bold mr-1">marobiana</span>
+					<span>비지도 학습을 해본 결과입니다. cluster 알고리즘을 사용해봤어요.</span>
+				</div>
+				<div class="card-comment">
+					<div class="border-top font-weight-bold py-2">댓글</div>
+					<div class="comment">
+						<span class="font-weight-bold mr-1">hagulu</span>
+						<span>분류가 잘 되었군요~</span>
+						<img src="/img/x-icon.png" class="comment-delete">
+					</div>
+					<div class="comment">
+						<span class="font-weight-bold mr-1">jun_coffe</span>
+						<span>철이 없었죠. 분류를 위해 클러스터를 썼다는게</span>
+						<img src="/img/x-icon.png" class="comment-delete">
+					</div>
+				</div>
+				<div class="new-comment border-top">
+					<input type="text" class="form-control border-0" placeholder="댓글달기">
+					<button class="btn btn-light">게시</button>
+				</div>
 			</div>
-			
-		
 		</div>
 	</div>
 </section>

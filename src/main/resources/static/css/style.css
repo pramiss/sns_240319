@@ -51,9 +51,63 @@ header {
 	padding: 10px;
 }
 .new-post-area {
-	font-size: 18px;
+	font-size: 15px;
 	width: 100%;
 	border: 0;
+}
+
+/* 카드(Card) */
+.card-container {
+	margin: 30px 0;
+}
+.card-header {
+	padding: 0 1rem;
+	display: flex;
+	background: #fff;
+	justify-content: space-between;
+	align-items: center;
+	height: 40px;
+}
+.card-header-text {
+	font-size: 16px;
+}
+.card-like {
+	padding: .8rem .7rem;
+	display: flex;
+	align-items: center;
+	font-size: 14px;
+}
+.like {
+	width: 20px;
+}
+.card-content {
+	padding: .1rem .7rem;
+	font-size: 14px;
+}
+.card-comment {
+	padding: .8rem .7rem;
+	font-size: 14px;
+}
+.comment-delete {
+	width: 9px;
+	float: right;
+	margin-right: 5px;
+	margin-top: 5px;
+}
+.comment {
+	margin: 5px 0;
+}
+.new-comment {
+	display: flex;
+}
+.new-comment input {
+	padding: .2rem .7rem;
+	font-size: 14px;
+}
+.new-comment button {
+	padding: .2rem .7rem;
+	font-size: 14px;
+	width: 60px;
 }
 
 /* 로그인, 회원가입 관련 */
@@ -100,10 +154,10 @@ header {
 	border-radius: 8px;
 }
 .btn-upload {
-	font-size: 18px;
-	width: 75px;
+	font-size: 15px;
 	color: white;
 	border-radius: 10px;
+	padding: .2rem .95rem;
 }
 
 /* 배경색 */
@@ -113,4 +167,3 @@ header {
 .bg-skyblue {
 	background: #3ABEF9;
 }
-
