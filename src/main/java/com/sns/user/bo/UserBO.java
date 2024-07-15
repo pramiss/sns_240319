@@ -19,7 +19,7 @@ public class UserBO {
 	// input: loginId, output: UserEntity/null
 	public UserEntity getUserEntityByLoginId(String loginId) {
 		return userRepository.findByLoginId(loginId);
-	}
+	} //-- 아이디 중복확인
 	
 	// 회원가입
 	// input: 4params, output: UserEntity/null
@@ -30,5 +30,11 @@ public class UserBO {
 				.name(name)
 				.email(email)
 				.build());
-	}
+	} //-- 회원가입
+	
+	// 로그인
+	// input: loginId/password, output: UserEntity/null
+	public UserEntity getUserEntityByLoginIdAndPassword(String loginId, String password) {
+		return userRepository.findByLoginIdAndPassword(loginId, password);
+	} //-- 로그인
 }

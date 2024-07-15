@@ -6,12 +6,14 @@
 <!-- defaultLayout: content -->
 <section layout:fragment="content" class="contents">
 	<div class="sign-box">
-		<form method="post" action="#">
+		<form method="post" action="/user/sign-in">
 			<h1 class="mb-4">로그인</h1>
 			<div class="sign-input-box">
-				<input type="text" id="loginId" name="loginId" placeholder="아이디를 입력하세요." class="form-control mb-3 input-type-a w-320px">
-				<input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요." class="form-control mb-4 input-type-a w-320px">
-				<div class="d-flex justify-content-between">
+				<input type="text" id="loginId" name="loginId" placeholder="아이디를 입력하세요." class="form-control input-type-a w-320px">
+				<small id="checkId" class="text-danger ml-1 d-none">아이디를 입력해주세요.</small>
+				<input type="password" id="password" name="password" placeholder="비밀번호를 입력하세요." class="form-control mt-3 input-type-a w-320px">
+				<small id="checkPassword" class="text-danger ml-1 d-none">비밀번호를 입력해주세요.</small>
+				<div class="d-flex justify-content-between mt-4">
 					<button type="button" id="signUpBtn" class="btn btn-sign bg-darkdark">회원가입</button>
 					<button type="submit" id="signInBtn" class="btn btn-sign bg-skyblue">로그인</button>
 				</div>
@@ -24,9 +26,53 @@
 <th:block layout:fragment="script">
 	<script>
 		$(document).ready(function() {
+			// 회원가입 페이지로 이동
 			$("#signUpBtn").on("click", function() {
 				location.href = "/user/sign-up-view";
-			});
+			}); //-- 회원가입 페이지로 이동
+			
+			// 로그인 동작
+			$("form").on('submit', function(e) {
+				e.preventDefault();
+				$("#checkId").addClass("d-none");
+				$("#checkPassword").addClass("d-none");
+				
+				let loginId = $("#loginId").val().trim();
+				let password = $("#password").val();
+
+				// validation - 입력확인
+				let checkOk = true;
+				if (!loginId) {
+					$("#checkId").removeClass("d-none");
+					checkOk = false;
+				}
+				if (!password) {
+					$("#checkPassword").removeClass("d-none");
+					checkOk = false;
+				}
+				if (checkOk == false) {
+					return false;
+				}
+				
+				// AJAX
+				let url = $(this).attr('action');
+				let params = $(this).serialize();
+				
+				$.post(url, params)
+				.done(function(data) {
+					if (data.code == 200) {
+						location.href="/timeline/timeline-view";	
+					} else {
+						alert(data.error_message);	
+					}
+				})
+				.fail(function(error) {
+					alert("AJAX ERROR : 로그인 실패");
+				});
+				
+			}) //-- 로그인 동작
+			
+			
 		}); //-- ready
 	
 	</script>

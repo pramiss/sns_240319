@@ -33,10 +33,30 @@ header {
 }
 
 
-/* 로그인 관련 */
+/* 타임라인 관련 */
+.timeline {
+	display: flex;
+	justify-content: center;
+	padding: 20px 0;
+}
+.timeline-Container {
+	width: 40%;
+	min-width: 500px;
+}
+.new-post {
+	width: 90%;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	margin: 0 auto;
+	padding: 10px;
+}
+.new-post-area {
+	font-size: 18px;
+	width: 100%;
+	border: 0;
+}
 
-
-/* 회원가입 관련 */
+/* 로그인, 회원가입 관련 */
 .sign-box {
 	display: flex;
 	justify-content: center;
@@ -78,6 +98,12 @@ header {
 	width: 146px;
 	color: white;
 	border-radius: 8px;
+}
+.btn-upload {
+	font-size: 18px;
+	width: 75px;
+	color: white;
+	border-radius: 10px;
 }
 
 /* 배경색 */

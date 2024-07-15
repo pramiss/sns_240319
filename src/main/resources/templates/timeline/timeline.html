@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/defaultLayout}">
+
+<!-- defaultLayout: content -->
+<section layout:fragment="content" class="contents timeline">
+	<div class="timeline-Container">
+		<!-- New Post 작성 -->
+		<div class="new-post">
+			<textarea class="new-post-area" rows="4" placeholder="내용을 입력해주세요."></textarea>
+			<div class="d-flex justify-content-between mt-1">
+				<span>이미지</span>
+				<button class="btn btn-upload bg-skyblue">게시</button>
+			</div>
+		</div>
+		
+		<!-- Post(Card) 목록 -->
+		<div class="card">
+			<div class="d-flex justify-content-between">
+				<div>글쓴이</div>
+				<img src="/img/more-icon.png">
+			</div>
+			
+		
+		</div>
+	</div>
+</section>
+
+<!-- defaultLayout: script -->
+<th:block layout:fragment="script">
+	<script>
+		
+	</script>
+</th:block>
+
+</html>
