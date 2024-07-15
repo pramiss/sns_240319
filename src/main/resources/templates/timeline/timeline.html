@@ -5,34 +5,46 @@
 
 <!-- defaultLayout: content -->
 <section layout:fragment="content" class="contents timeline">
-	<div class="timeline-Container">
-		<!-- New Post 작성 -->
+	<div class="timeline-container">
+		<!-- New Post 작성 (로그인 된 사람만 보임) -->
 		<div class="new-post">
 			<textarea class="new-post-area" rows="4" placeholder="내용을 입력해주세요."></textarea>
 			<div class="d-flex justify-content-between mt-1">
-				<span>이미지</span>
+				<div>
+					<img width="30" src="/img/file-upload-icon.webp">				
+				</div>
 				<button id="uploadBtn" class="btn btn-secondary btn-upload">게시</button>
 			</div>
 		</div>
 		
-		<!-- Post(Card) 목록 -->
+		<!-- 타임라인 영역 -->
 		<div class="card-container">
+			<!-- 카드 -->
 			<div class="card">
+				<!-- 글쓴이, 더보기(삭제) -->
 				<div class="card-header">
 					<div class="card-header-text">marobiana</div>
 					<img src="/img/more-icon.png" height="100%">
 				</div>
+				
+				<!-- 본문 이미지 -->
 				<div class="card-img">
 					<img width="100%" alt="게시물" src="https://cdn.pixabay.com/photo/2024/05/18/19/21/plant-8770937_1280.jpg">
 				</div>
+				
+				<!-- 좋아요 -->
 				<div class="card-like">
 					<img alt="좋아요" src="/img/heart-icon.png" class="like mr-2">
 					<span>좋아요 11개</span>
 				</div>
+				
+				<!-- 글 내용 -->
 				<div class="card-content">
 					<span class="font-weight-bold mr-1">marobiana</span>
 					<span>비지도 학습을 해본 결과입니다. cluster 알고리즘을 사용해봤어요.</span>
 				</div>
+				
+				<!--  댓글 -->
 				<div class="card-comment">
 					<div class="border-top font-weight-bold py-2">댓글</div>
 					<div class="comment">
@@ -46,6 +58,8 @@
 						<img src="/img/x-icon.png" class="comment-delete">
 					</div>
 				</div>
+				
+				<!-- 댓글 쓰기 -->
 				<div class="new-comment border-top">
 					<input type="text" class="form-control border-0" placeholder="댓글달기">
 					<button class="btn btn-light">게시</button>
