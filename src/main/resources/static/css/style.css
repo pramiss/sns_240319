@@ -32,6 +32,13 @@ header {
 	padding: 80px 0;
 }
 
+/* 로고 */
+.logo {
+	color: #fff;
+	font-size: 43px;
+	margin-bottom: 5px;
+}
+
 
 /* 타임라인 관련 */
 .timeline {

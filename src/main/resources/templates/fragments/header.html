@@ -4,7 +4,7 @@
 	<header th:fragment="headerFragment">
 		<div class="h-100 w-100 y-center justify-content-between px-4">
 			<!-- 로고 영역 -->
-			<div class="display-4">Outstagram</div>
+			<div class="logo">Outstagram</div>
 			<!-- 로그인 영역 -->
 			<div th:if="${session.userId != null}">
 				<span th:text="${session.userName} + '님 안녕하세요.'" class="font-weight-bold"></span>
