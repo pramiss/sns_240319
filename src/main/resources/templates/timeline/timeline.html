@@ -11,10 +11,17 @@
 	
 		<!-- New Post 작성 (로그인O) -->
 		<div th:if="${session.userId != null}" class="new-post">
-			<textarea class="new-post-area" rows="4" placeholder="내용을 입력해주세요."></textarea>
+			<textarea id="newContent" class="new-post-area" rows="4" placeholder="내용을 입력해주세요."></textarea>
 			<div class="d-flex justify-content-between mt-1">
-				<div>
-					<img width="30" src="/img/file-upload-icon.webp">				
+				<div class="file-upload y-center">
+					<!-- file 태그를 숨겨두고 이미지를 클릭하면 파일을 클릭한 것과 같은 효과를 준다. -->
+					<input type="file" id="file" accept=".jpg, .png, .gif" class="d-none">
+					
+					<!-- 이미지에 마우스 올리면 커서가 link로 변경 -->
+					<a href="#" id="fileUploadBtn"><img width="32" src="/img/file-upload-icon.webp"></a>
+					
+					<!-- 현재 선택된 이미지 파일명을 보여줌 -->				
+					<div id="fileName" class="ml-2"></div>
 				</div>
 				<button id="uploadBtn" class="btn btn-secondary btn-upload">게시</button>
 			</div>
@@ -42,7 +49,7 @@
 			</div>
 			
 			<!-- 글 내용 -->
-			<div th:if="${post.content != null}" class="card-content">
+			<div th:if="${post.content != ''}" class="card-content">
 				<span class="font-weight-bold mr-1" th:text="${post.userId}">marobiana</span>
 				<span th:text="${post.content}">비지도 학습을 해본 결과입니다. cluster 알고리즘을 사용해봤어요.</span>
 			</div>
@@ -75,7 +82,104 @@
 <!-- defaultLayout: script -->
 <th:block layout:fragment="script">
 	<script>
-		
+		$(document).ready(function() {
+			
+			// 이미지 a태그 클릭 => 숨겨져있는 id="file" 태그 동작시키기
+			$('#fileUploadBtn').on('click', function(e) {
+				e.preventDefault(); // <a>태그에 의해 위로 올라가는 것을 방지
+				
+				// input file을 클릭
+				$("#file").click();
+			}); //-- 이미지 <a> 클릭
+			
+			// 파일이 선택될 때, 1.유효성 체크 2.파일명 노출
+			$("#file").on('change', function(e) {
+				// 취소를 누를 때 처리 (취소도 change로 들어옴)
+				// 파일이 비워지므로 .name에서 에러 발생
+				let file = e.target.files[0];
+				if (file == null) { // 취소가 눌려서 file이 null인 상태
+					$("#file").val("");
+					$("#fileName").text("");
+					return;
+				}
+				
+				
+				let fileName = file.name; // 현재 change된 file의 이름을 가져옴 				
+				console.log(fileName); // Jinshi.jpg (fakpath가 아닌 실제 이름을 가져옴) 
+				
+				// 1. 확장자 validation
+				let ext = fileName.split(".").pop().toLowerCase();
+
+				if (ext != "gif" && ext != "png" && ext != "jpg") {
+					alert("이미지 파일만 업로드 할 수 있습니다.");
+					
+					// 1) ☆☆☆ 잘못된 파일 제거, 보이지 않지만 꼭 처리해야함!!
+					$("#file").val("");
+					// 2) 파일명도 초기화
+					$("#fileName").text("");
+					return;
+				}
+
+				// 2. 파일명 노출
+				$("#fileName").text(fileName);
+				
+			})//-- file change
+			
+			// 파일 업로드
+			$("#uploadBtn").on('click', function() {
+				let content = $("#newContent").val();
+				let file = $("#file")[0].files[0];
+				
+				// validation - file 여부, 확장자 검사
+				if (!file) {
+					alert("이미지를 1개 이상 올려주세요.");
+					return;
+				}
+				
+				let extension = file.name.split(".").pop().toLowerCase();
+				console.log(extension);
+				if ($.inArray(extension, ["jpg", "png", "gif"]) == -1) {
+					alert("이미지 파일만 업로드 할 수 있습니다.");
+					$("#file").val("");
+					$("#fileName").text("");
+					return;
+				}
+				
+				// form 데이터 만들기				
+				let formData = new FormData();
+				formData.append("content", content);
+				formData.append("file", file);
+				
+				// AJAX - content, file
+				$.ajax({
+					// request
+					type:"post"
+					, url:"/post/create"
+					, data:formData
+					, enctype:"multipart/form-data"
+					, processData:false
+					, contentType:false
+					
+					// response
+					, success:function(data) {
+						if (data.code == 200) {
+							location.reload();
+						} else if (data.code == 500) { // 비로그인 일때
+							alert(data.error_message);
+							location.href = "/user/sign-in-view";
+						} else {
+							alert(data.error_message);
+						}
+					}
+					, error:function(error) {
+						alert("AJAX ERROR : 글 쓰기 실패");
+					}
+					
+				}); //-- ajax
+			});
+			
+			
+		}); //-- ready
 	</script>
 </th:block>
 
