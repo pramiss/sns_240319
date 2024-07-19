@@ -8,7 +8,6 @@
 
 	<!-- 타임라인 컨테이너 -->
 	<div class="timeline-container">
-	
 		<!-- New Post 작성 (로그인O) -->
 		<div th:if="${session.userId != null}" class="new-post">
 			<textarea id="newContent" class="new-post-area" rows="4" placeholder="내용을 입력해주세요."></textarea>
@@ -29,6 +28,7 @@
 		
 		<!-- 타임라인 카드 영역 (로그인 상관x) -->
 		<div th:each="post : ${postList}" class="card">
+			
 			<!-- 글쓴이, 더보기(삭제) -->
 			<div class="card-header">
 				<div class="card-header-text" th:text="${post.userId}">marobiana</div>
@@ -54,27 +54,33 @@
 				<span th:text="${post.content}">비지도 학습을 해본 결과입니다. cluster 알고리즘을 사용해봤어요.</span>
 			</div>
 			
-			<!--  댓글 -->
+			<!-- 댓글 목록 -->
 			<div class="card-comment">
 				<div class="border-top font-weight-bold py-2">댓글</div>
-				<div class="comment">
-					<span class="font-weight-bold mr-1">hagulu</span>
-					<span>분류가 잘 되었군요~</span>
-					<img src="/img/x-icon.png" class="comment-delete">
-				</div>
-				<div class="comment">
-					<span class="font-weight-bold mr-1">jun_coffe</span>
-					<span>철이 없었죠. 분류를 위해 클러스터를 썼다는게</span>
-					<img src="/img/x-icon.png" class="comment-delete">
-				</div>
-			</div>
+				
+				<!-- 댓글 -->
+				<th:block th:each="comment : ${commentList}">
+					<div th:if="${comment.postId == post.id}" class="comment">
+						<div>
+							<span class="font-weight-bold mr-1" th:text="${comment.userId}">작성자</span>
+							<span th:text="${comment.content}">내용</span>
+						</div>
+						
+						<!-- 댓글 삭제 -->
+						<div>
+							<small th:text="${#temporals.format(comment.createdAt, 'M월 d일')}" class="text-secondary"></small>
+							<img th:if="${comment.userId == session.userId}" src="/img/x-icon.png" class="comment-delete">
+						</div>
+					</div>
+				</th:block><!-- 댓글 1개 끝 -->
+			</div><!-- 댓글 목록 끝-->
 			
 			<!-- 댓글 쓰기 -->
-			<div class="new-comment border-top">
-				<input type="text" class="form-control border-0" placeholder="댓글달기">
-				<button class="btn btn-light">게시</button>
+			<div th:if="${session.userId != null}" class="new-comment border-top">
+				<input type="text" class="comment-input form-control border-0" placeholder="댓글달기">
+				<button th:data-post-id="${post.id}" th:data-user-id="${session.userId}" type="button" class="comment-btn btn btn-light">게시</button>
 			</div>
-		</div>
+		</div><!-- 카드영역 끝 -->
 			
 	</div>
 </section>
@@ -164,7 +170,7 @@
 					, success:function(data) {
 						if (data.code == 200) {
 							location.reload();
-						} else if (data.code == 500) { // 비로그인 일때
+						} else if (data.code == 403) { // 비로그인 일때
 							alert(data.error_message);
 							location.href = "/user/sign-in-view";
 						} else {
@@ -176,7 +182,43 @@
 					}
 					
 				}); //-- ajax
+			}); //-- 타임라인 글 쓰기
+			
+			// 댓글 작성 - 엔터로도 동작하게
+			$('.comment-input').on('keypress', function(e){
+				if(e.keyCode == '13'){
+					$(this).siblings(".comment-btn").click();
+				}
 			});
+			
+			// 댓글 작성
+			$(".comment-btn").on('click', function(e) {
+				// postId, content 가져오기				
+				let postId = $(this).data("post-id");
+				let content = $(this).siblings(".comment-input").val().trim();
+				
+				// validation
+				if (!content) {
+					$(this).siblings(".comment-input").focus();
+					return;
+				}
+				
+				// AJAX - content, postId
+				$.post("/comment/create", {"postId":postId, "content":content})
+				.done(function(data) {
+					if (data.code == 200) {
+						location.reload();
+					} else if (data.code == 403) { // 로그인 실패
+						alert(data.error_message);
+					} else { // 그 외 에러
+						alert(data.error_message);
+					}
+				})
+				.fail(function(e) {
+					alert("AJAX ERROR : 댓글 작성 실패");
+				});
+				
+			}); //-- 댓글 작성
 			
 			
 		}); //-- ready

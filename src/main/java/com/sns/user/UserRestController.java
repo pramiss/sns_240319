@@ -47,7 +47,7 @@ public class UserRestController {
 		}
 		
 		return result;
-	}
+	} //-- 아이디 중복 확인 API
 	
 	/**
 	 * 회원가입 API
