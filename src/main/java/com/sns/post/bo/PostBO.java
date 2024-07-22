@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sns.common.FileManagerService;
 import com.sns.post.entity.PostEntity;
 import com.sns.post.repository.PostRepository;
+import com.sns.user.entity.UserEntity;
 
 @Service
 public class PostBO {

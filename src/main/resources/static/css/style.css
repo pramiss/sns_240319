@@ -22,6 +22,18 @@
 	align-items: center;
 }
 
+
+.bg-darkdark {
+	background: #525252;
+}
+.bg-skyblue {
+	background: #3ABEF9;
+}
+
+.fs-14 {
+	font-size: 14px;
+}
+
 /* 레이아웃 */
 header {
 	height: 100px;
@@ -100,7 +112,7 @@ header {
 	font-size: 14px;
 }
 .card-comment {
-	padding: .8rem .7rem;
+	padding: .3rem .7rem .8rem .7rem;
 	font-size: 14px;
 }
 .comment-delete {
@@ -109,17 +121,18 @@ header {
 .comment {
 	display: flex;
 	justify-content: space-between;
-	margin: 5px 0;
+	margin: 6px 0;
 }
 .new-comment {
 	display: flex;
+	margin: 0 .7rem;
 }
 .new-comment input {
-	padding: .2rem .7rem;
+	padding: .2rem;
 	font-size: 14px;
 }
 .new-comment button {
-	padding: .2rem .7rem;
+	padding: .2rem;
 	font-size: 14px;
 	width: 60px;
 }
@@ -174,10 +187,3 @@ header {
 	padding: .2rem .95rem;
 }
 
-/* 배경색 */
-.bg-darkdark {
-	background: #525252;
-}
-.bg-skyblue {
-	background: #3ABEF9;
-}

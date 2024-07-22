@@ -12,6 +12,8 @@ public interface CommentMapper {
 
 	// 댓글목록
 	public List<Comment> selectCommentList();
+	public List<Comment> selectCommentListByPostId(int postId);
+	
 	
 	// 댓글작성
 	public int insertComment(

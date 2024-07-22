@@ -15,6 +15,22 @@
 			`comment` 
 		ORDER BY `id` ASC
 	</select>
+	
+	<select id="selectCommentListByPostId" parameterType="int" resultType="com.sns.comment.domain.Comment">
+		SELECT
+			`id`
+			, `userId`
+			, `postId`
+			, `content`
+			, `createdAt`
+			, `updatedAt`
+		FROM
+			`comment`
+		WHERE
+			`postId` = #{postId} 
+		ORDER BY `id` ASC
+	</select>
+		
 	<insert id="insertComment" parameterType="map">
 		INSERT INTO `comment`
 		(

@@ -27,19 +27,19 @@
 		</div>
 		
 		<!-- 타임라인 카드 영역 (로그인 상관x) -->
-		<div th:each="post : ${postList}" class="card">
+		<div th:each="card : ${cardViewList}" class="card">
 			
 			<!-- 글쓴이, 더보기(삭제) -->
 			<div class="card-header">
-				<div class="card-header-text" th:text="${post.userId}">marobiana</div>
-				<a th:if="${session.userId == post.userId}" class="card-header-more">
+				<div class="card-header-text" th:text="${card.user.name}">marobiana</div>
+				<a th:if="${session.userId == card.user.id}" class="card-header-more">
 					<img src="/img/more-icon.png" width="100%">
 				</a>
 			</div>
 			
 			<!-- 본문 이미지 -->
 			<div class="card-img">
-				<img alt="게시물" th:src="${post.imagePath}" class="card-img-src">
+				<img alt="게시물" th:src="${card.post.imagePath}" class="card-img-src">
 			</div>
 			
 			<!-- 좋아요 -->
@@ -49,39 +49,38 @@
 			</div>
 			
 			<!-- 글 내용 -->
-			<div th:if="${post.content != ''}" class="card-content">
-				<span class="font-weight-bold mr-1" th:text="${post.userId}">marobiana</span>
-				<span th:text="${post.content}">비지도 학습을 해본 결과입니다. cluster 알고리즘을 사용해봤어요.</span>
+			<div th:if="${card.post.content != ''}" class="card-content">
+				<span class="font-weight-bold mr-1" th:text="${card.user.name}">marobiana</span>
+				<span th:text="${card.post.content}">비지도 학습을 해본 결과입니다. cluster 알고리즘을 사용해봤어요.</span>
 			</div>
+			
+			<div class="fs-14 border-top font-weight-bold pt-2 pl-2 mt-2">댓글</div>
 			
 			<!-- 댓글 목록 -->
 			<div class="card-comment">
-				<div class="border-top font-weight-bold py-2">댓글</div>
-				
 				<!-- 댓글 -->
-				<th:block th:each="comment : ${commentList}">
-					<div th:if="${comment.postId == post.id}" class="comment">
-						<div>
-							<span class="font-weight-bold mr-1" th:text="${comment.userId}">작성자</span>
-							<span th:text="${comment.content}">내용</span>
-						</div>
-						
-						<!-- 댓글 삭제 -->
-						<div>
-							<small th:text="${#temporals.format(comment.createdAt, 'M월 d일')}" class="text-secondary"></small>
-							<img th:if="${comment.userId == session.userId}" src="/img/x-icon.png" class="comment-delete">
-						</div>
+				<div th:each="commentView : ${card.commentList}" class="comment">
+					<div>
+						<span class="font-weight-bold mr-1" th:text="${commentView.user.loginId}">작성자</span>
+						<span th:text="${commentView.comment.content}">내용</span>
 					</div>
-				</th:block><!-- 댓글 1개 끝 -->
+					
+					<!-- 댓글 삭제 -->
+					<div>
+						<small th:text="${#temporals.format(commentView.comment.createdAt, 'M월 d일')}" class="text-secondary"></small>
+						<img th:if="${commentView.comment.userId == session.userId}" src="/img/x-icon.png" class="comment-delete">
+					</div>
+				</div><!-- 댓글 1개 끝 -->
 			</div><!-- 댓글 목록 끝-->
 			
 			<!-- 댓글 쓰기 -->
-			<div th:if="${session.userId != null}" class="new-comment border-top">
-				<input type="text" class="comment-input form-control border-0" placeholder="댓글달기">
-				<button th:data-post-id="${post.id}" th:data-user-id="${session.userId}" type="button" class="comment-btn btn btn-light">게시</button>
+			<div th:if="${session.userId != null}" class="new-comment">
+				<div class="border-top comment-input">
+					<input type="text" class="form-control border-0" placeholder="댓글달기">
+				</div>
+				<button th:data-post-id="${card.post.id}" th:data-user-id="${session.userId}" type="button" class="comment-btn btn btn-light">게시</button>
 			</div>
 		</div><!-- 카드영역 끝 -->
-			
 	</div>
 </section>
 

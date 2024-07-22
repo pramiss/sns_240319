@@ -15,6 +15,13 @@ public class UserBO {
 		this.userRepository = userRepository;
 	}
 	
+	// id에 해당하는 User 가져오기
+	// input: userId(id), output: UserEntity
+	public UserEntity getUserEntityById(int id) {
+		return userRepository.findById(id).orElse(null);
+	}
+	
+	
 	// 아이디 중복확인
 	// input: loginId, output: UserEntity/null
 	public UserEntity getUserEntityByLoginId(String loginId) {
