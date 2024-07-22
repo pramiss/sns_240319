@@ -20,4 +20,7 @@ public interface CommentMapper {
 			@Param("userId") int userId,
 			@Param("postId") int postId,
 			@Param("content") String content);
+	
+	// 댓글삭제
+	public int deleteCommentById(int id);
 }

@@ -13,8 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 public class FileManagerService {
 
 	// 파일 경로
-//	public static final String FILE_UPLOAD_PATH = "C:\\github\\Marondal\\6_project\\sns\\sns_workspace\\images/"; // 집
-	public static final String FILE_UPLOAD_PATH = "D:\\배진하\\6_spring_project\\sns\\sns_workspace\\images/"; // 학원
+	public static final String FILE_UPLOAD_PATH = "C:\\github\\Marondal\\6_project\\sns\\sns_workspace\\images/"; // 집
+//	public static final String FILE_UPLOAD_PATH = "D:\\배진하\\6_spring_project\\sns\\sns_workspace\\images/"; // 학원
 	
 	public String uploadFile(MultipartFile file, String loginId) {
 		// 1. 이미지 디렉토리명 생성 => "sun_123"

@@ -27,6 +27,7 @@ public class CommentBO {
 		return commentMapper.selectCommentList();
 	}
 	
+	// 댓글 뷰
 	// input: postId, output: List<CommentView>
 	public List<CommentView> generateCommentViewListByPostId(int postId) {
 		List<Comment> commentList = commentMapper.selectCommentListByPostId(postId);
@@ -55,4 +56,10 @@ public class CommentBO {
 	public int addComment(int userId, int postId, String content) {
 		return commentMapper.insertComment(userId, postId, content);
 	} //-- 댓글작성
+	
+	// 댓글삭제
+	// input: commentId(id), output: rowCount
+	public int deleteCommentById(int id) {
+		return commentMapper.deleteCommentById(id);
+	} //-- 댓글삭제
 }

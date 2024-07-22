@@ -68,16 +68,15 @@
 					<!-- 댓글 삭제 -->
 					<div>
 						<small th:text="${#temporals.format(commentView.comment.createdAt, 'M월 d일')}" class="text-secondary"></small>
-						<img th:if="${commentView.comment.userId == session.userId}" src="/img/x-icon.png" class="comment-delete">
+						<img th:if="${commentView.comment.userId == session.userId}" src="/img/x-icon.png"
+						 th:data-comment-id="${commentView.comment.id}" th:data-comment-user-id="${commentView.comment.userId}" class="comment-delete">
 					</div>
 				</div><!-- 댓글 1개 끝 -->
 			</div><!-- 댓글 목록 끝-->
 			
 			<!-- 댓글 쓰기 -->
 			<div th:if="${session.userId != null}" class="new-comment">
-				<div class="border-top comment-input">
-					<input type="text" class="form-control border-0" placeholder="댓글달기">
-				</div>
+				<input type="text" class="comment-input form-control" placeholder="댓글달기">
 				<button th:data-post-id="${card.post.id}" th:data-user-id="${session.userId}" type="button" class="comment-btn btn btn-light">게시</button>
 			</div>
 		</div><!-- 카드영역 끝 -->
@@ -218,8 +217,36 @@
 				});
 				
 			}); //-- 댓글 작성
-			
-			
+
+			// 댓글삭제
+			// th:data-comment-id="${commentView.comment.userId}" class=comment-delete
+			$(".comment-delete").on('click', function(e) {
+				let commentId = $(this).data("comment-id");
+				let userId = $(this).data("comment-user-id");
+
+				// AJAX 요청
+				$.ajax({
+					url:"/comment/delete"
+					, type:"delete"
+					, data:{"commentId":commentId, "userId":userId}
+					, success:function(data) {
+						if (data.code == 200) {
+							location.reload();
+						} else if (data.code == 403) {
+							alert(data.error_message);
+							location.reload();
+						}
+					}
+					, error:function(e) {
+						alert("AJAX ERROR : 댓글 삭제 실패");
+					}
+					
+					
+				}); //-- delete ajax 
+				
+				
+			}); //-- 댓글삭제 버튼
+		
 		}); //-- ready
 	</script>
 </th:block>
