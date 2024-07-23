@@ -44,8 +44,9 @@
 			
 			<!-- 좋아요 -->
 			<div class="card-like">
-				<img alt="좋아요" src="/img/heart-icon.png" class="like mr-2">
-				<span>좋아요 11개</span>
+				<img th:if="${card.liked}" alt="좋아요" src="/img/heart-click-icon.png" th:data-post-id="${card.post.id}" class="like mr-2">
+				<img th:unless="${card.liked}" alt="좋아요" src="/img/heart-icon.png" th:data-post-id="${card.post.id}" class="like mr-2">
+				<span th:text="|좋아요 ${card.likeCount}개|">싫어요</span>
 			</div>
 			
 			<!-- 글 내용 -->
@@ -240,13 +241,29 @@
 					, error:function(e) {
 						alert("AJAX ERROR : 댓글 삭제 실패");
 					}
-					
-					
 				}); //-- delete ajax 
-				
-				
 			}); //-- 댓글삭제 버튼
 		
+			// 좋아요 토글
+			$(".like").on('click', function(e) {
+				let postId = $(this).data("post-id");
+				
+				$.ajax({
+					type:"get"
+					, url:"/like/" + postId //-- 바로 postId를 보내므로 data가 필요없음
+					, success:function(data) {
+						if (data.code == 200) {
+							location.reload(); // 새로고침 => 타임라인 화면 뿌려질 떄 하트 여부 나타냄
+						} else if (data.code == 403) {
+							alert(data.error_message);
+						}
+					}
+					, error:function(e) {
+						alert("AJAX ERROR : 좋아요 실패");
+					}
+					
+				}); //-- ajax
+			});
 		}); //-- ready
 	</script>
 </th:block>

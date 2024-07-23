@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.sns.timeline.bo.TimelineBO;
 import com.sns.timeline.domain.CardView;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 public class TimelineController {
 	
@@ -17,10 +19,11 @@ public class TimelineController {
 	private TimelineBO timelineBO;
 	
 	@GetMapping("/timeline/timeline-view")
-	public String timelineView(Model model) {
+	public String timelineView(
+			Model model, HttpSession session) {
 	
 		// (개선) Card 단위로 가져오기
-		List<CardView> cardViewList = timelineBO.generateCardViewList();
+		List<CardView> cardViewList = timelineBO.generateCardViewList((Integer)session.getAttribute("userId"));
 		
 		// model
 		model.addAttribute("cardViewList", cardViewList);
