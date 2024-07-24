@@ -46,7 +46,7 @@
 			<div class="card-like">
 				<img th:if="${card.liked}" alt="좋아요" src="/img/heart-click-icon.png" th:data-post-id="${card.post.id}" class="like mr-2">
 				<img th:unless="${card.liked}" alt="좋아요" src="/img/heart-icon.png" th:data-post-id="${card.post.id}" class="like mr-2">
-				<span th:text="|좋아요 ${card.likeCount}개|">싫어요</span>
+				<span th:text="|좋아요 ${card.likeCount}개|">좋아요 개수</span>
 			</div>
 			
 			<!-- 글 내용 -->

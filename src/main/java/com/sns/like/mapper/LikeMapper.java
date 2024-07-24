@@ -9,12 +9,12 @@ import com.sns.like.domain.Like;
 
 @Mapper
 public interface LikeMapper {
-
-	// 조회
-	public int selectLikeCountByPostId(int postId);
-	public int selectLikeCountByPostIdAndUserId(
+		
+	// 조회 - 카운트 쿼리를 하나로 합친다.
+	public int selectLikeCountByPostIdOrUserId(
 			@Param("postId") int postId,
-			@Param("userId") int userId);
+			@Param("userId") Integer userId);
+	
 	// 삽입
 	public void insertLikeByPostIdAndUserId(
 			@Param("postId") int postId,

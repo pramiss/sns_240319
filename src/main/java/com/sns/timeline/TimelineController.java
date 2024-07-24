@@ -21,9 +21,10 @@ public class TimelineController {
 	@GetMapping("/timeline/timeline-view")
 	public String timelineView(
 			Model model, HttpSession session) {
-	
+		Integer sessionUserId = (Integer)session.getAttribute("userId");
+		
 		// (개선) Card 단위로 가져오기
-		List<CardView> cardViewList = timelineBO.generateCardViewList((Integer)session.getAttribute("userId"));
+		List<CardView> cardViewList = timelineBO.generateCardViewList(sessionUserId);
 		
 		// model
 		model.addAttribute("cardViewList", cardViewList);

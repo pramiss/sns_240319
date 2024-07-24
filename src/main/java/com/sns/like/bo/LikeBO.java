@@ -13,26 +13,32 @@ public class LikeBO {
 	
 	@Autowired
 	private LikeMapper likeMapper;
-	
-	// input: postId, output: List<Like>
-	public int getLikeCountByPostId(int postId) {
-		return likeMapper.selectLikeCountByPostId(postId);
+
+	// 좋아요 채울지 여부
+	// input: (postId(int:필수), sessionUserId(Integer:로그인/비로그인)
+	// output: boolean(채울지 여부)
+	public boolean likedByPostIdAndUserId(int postId, Integer userId) {
+		// 비로그인
+		if (userId == null) return false;
+		
+		// 로그인 - DB 조회
+		return likeMapper.selectLikeCountByPostIdOrUserId(postId, userId) > 0 ? true : false;
 	}
 	
-	// input: (postId, userId), output: boolean
-	public boolean isLikedByPostIdAndUserId(int postId, int userId) {
-		int count = likeMapper.selectLikeCountByPostIdAndUserId(postId, userId);
-		if (count > 0) {
-			return true;
-		} else {
-			return false;
-		}
+	// input: postId, output: likeCount
+	public int getLikeCountByPostId(int postId) {
+		return likeMapper.selectLikeCountByPostIdOrUserId(postId, null);
+	}
+	
+	// input: (postId, userId), output: likeCount
+	public int getLikeCountByPostIdAndUserId(int postId, int userId) {
+		return likeMapper.selectLikeCountByPostIdOrUserId(postId, userId);
 	}
 	
 	// input: (postId, userId), output: X
 	public void likeToggle(int postId, int userId) {
 		// 조회
-		int count = likeMapper.selectLikeCountByPostIdAndUserId(postId, userId);
+		int count = likeMapper.selectLikeCountByPostIdOrUserId(postId, userId);
 		
 		// 있음 -> 삭제
 		if (count > 0) {

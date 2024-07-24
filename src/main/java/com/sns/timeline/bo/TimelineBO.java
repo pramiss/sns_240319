@@ -29,9 +29,8 @@ public class TimelineBO {
 	@Autowired
 	private LikeBO likeBO;
 	
-	// Timeline의 전체 Card들을 가지고 옴
-	// input: X, output: List<CardView>
-	public List<CardView> generateCardViewList(Integer sessionUserId) {
+	// input: session userId, output: List<CardView>
+	public List<CardView> generateCardViewList(Integer sessionUserId) { // 비로그인도 timeline이 보여지므로 null 가능
 		List<CardView> cardViewList = new ArrayList<>();
 		List<PostEntity> postEntityList = postBO.getPostEntityList();
 		
@@ -55,8 +54,7 @@ public class TimelineBO {
 			card.setLikeCount(likeBO.getLikeCountByPostId(postId));
 			
 			// 5) 유저의 좋아요 누른 여부
-			if (sessionUserId == null) sessionUserId = 0;
-			card.setLiked(likeBO.isLikedByPostIdAndUserId(postId, sessionUserId));
+			card.setLiked(likeBO.likedByPostIdAndUserId(postId, sessionUserId));
 			
 			// !!! 반드시 리스트에 넣는다.
 			cardViewList.add(card);
