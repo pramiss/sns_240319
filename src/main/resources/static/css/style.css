@@ -1,6 +1,9 @@
 @charset "UTF-8";
 
 /* 기본 태그, 설정 변경 */
+a, a:link {
+	text-decoration: none;
+}
 
 /* 변수 */
 :root {
@@ -100,8 +103,9 @@ header {
 	font-weight: bold;
 }
 
-.card-header-more {
+.more-btn {
 	width: 30px;
+	cursor: pointer;
 }
 
 .card-img-src {

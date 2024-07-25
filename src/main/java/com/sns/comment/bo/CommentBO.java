@@ -61,5 +61,10 @@ public class CommentBO {
 	// input: commentId(id), output: rowCount
 	public int deleteCommentById(int id) {
 		return commentMapper.deleteCommentById(id);
-	} //-- 댓글삭제
+	} //-- 댓글삭제 by id
+	
+	// input: postId, output: void
+	public void deleteCommentByPostId(int postId) {
+		commentMapper.deleteCommentByPostId(postId);
+	} //-- 댓글삭제 by postId
 }

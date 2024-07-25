@@ -49,4 +49,10 @@ public class LikeBO {
 			likeMapper.insertLikeByPostIdAndUserId(postId, userId);
 		}
 	}
+	
+	// 좋아요 삭제
+	// input: postId, output: x
+	public void deleteLikeByPostId(int postId) {
+		likeMapper.deleteLikeByPostId(postId);
+	}
 }

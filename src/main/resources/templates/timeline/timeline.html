@@ -32,7 +32,7 @@
 			<!-- 글쓴이, 더보기(삭제) -->
 			<div class="card-header">
 				<div class="card-header-text" th:text="${card.user.name}">marobiana</div>
-				<a th:if="${session.userId == card.user.id}" class="card-header-more">
+				<a th:if="${session.userId == card.user.id}" class="more-btn" th:data-post-id="${card.post.id}" data-toggle="modal" data-target="#modal">
 					<img src="/img/more-icon.png" width="100%">
 				</a>
 			</div>
@@ -81,7 +81,24 @@
 				<button th:data-post-id="${card.post.id}" th:data-user-id="${session.userId}" type="button" class="comment-btn btn btn-light">게시</button>
 			</div>
 		</div><!-- 카드영역 끝 -->
-	</div>
+		
+		<!-- 글 삭제 Modal : 타임리프 레이아웃 때문에 최소한 section 안쪽에 위치  -->
+		<div class="modal fade" id="modal">
+			<!-- modal-sm: 작은 모달창, modal-dialog-centered: 수직기준 가운데정렬 -->
+			<div class="modal-dialog modal-sm modal-dialog-centered">
+				<div class="modal-content text-center">
+					<div class="py-3">
+						<a href="#" id="postDeleteBtn">삭제하기</a>
+					</div>
+					<div class="py-3 border-top">
+						<a href="#" data-dismiss="modal">취소</a>
+					</div>
+				</div>
+			</div>
+		</div> <!-- 글 삭제 Modal-->
+		
+	</div> <!-- 타임라인 컨테이너 -->
+	
 </section>
 
 <!-- defaultLayout: script -->
@@ -264,6 +281,43 @@
 					
 				}); //-- ajax
 			});
+			
+			// 더보기(...) a 태그 클릭 => 모달 띄우기, 모달에 글번호 심어놓기
+			$(".more-btn").on('click', function(e) {
+				e.preventDefault(); // <a> 위로 올라감 방지
+				
+				let postId = $(this).data("post-id"); // getting
+
+				// 1개만 존재하는 modal을 재활용하기 위해 data-post-id를 심어놓는다.
+				$('#modal').data('post-id', postId); // setting
+			}); //-- 더보기(...) 버튼
+			
+			// 모달 안에 있는 '삭제하기' 클릭
+			$('#postDeleteBtn').on('click', function(e) {
+				e.preventDefault(); // <a> 태그 방지
+				
+				let postId = $('#modal').data('post-id');
+
+				$.ajax({
+					type:"delete"
+					, url:"/post/delete"
+					, data:{"postId":postId}
+					, success:function(data) {
+						if (data.code == 200) {
+							alert("삭제성공");
+							location.reload();
+						} else if (data.code == 403) {
+							alert(data.error_message);
+						}
+					}
+					, error:function(e) {
+						alert("AJAX ERROR : 글 삭제 실패");
+					}
+					
+				}); //-- ajax
+				
+			}); //-- 모달 '삭제하기'
+			
 		}); //-- ready
 	</script>
 </th:block>

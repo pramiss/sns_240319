@@ -9,4 +9,5 @@ import com.sns.post.entity.PostEntity;
 public interface PostRepository extends JpaRepository<PostEntity, Integer> {
 	// jpql
 	public List<PostEntity> findByOrderByIdDesc();
+	public PostEntity findByIdAndUserId(int id, int userId);
 }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +23,13 @@ public class PostRestController {
 	@Autowired
 	private PostBO postBO;
 	
+	/**
+	 * 글 생성 API
+	 * @param content
+	 * @param file
+	 * @param session
+	 * @return
+	 */
 	@PostMapping("/create")
 	public Map<String, Object> create(
 			@RequestParam(value = "content", required = false) String content,
@@ -53,4 +61,30 @@ public class PostRestController {
 		
 		return result;
 	}
+	
+	// 글 삭제 API
+	@DeleteMapping("/delete")
+	public Map<String, Object> delete(
+			@RequestParam("postId") int postId,
+			HttpSession session) {
+		
+		Map<String, Object> result = new HashMap<>();
+		
+		// 로그인 확인
+		Integer userId = (Integer)session.getAttribute("userId");
+		if (userId == null) {
+			result.put("code", 403);
+			result.put("error_message", "로그인 해주세요.");
+			return result;
+		}
+		
+		// 1. 글(이미지, 댓글, 좋아요) 삭제
+		postBO.deletePostEntityByIdAndUserId(postId, userId);
+		
+		// AJAX return
+		result.put("code", 200);
+		result.put("result", "성공");
+		return result;
+		
+	} //-- 글 삭제 API
 }
